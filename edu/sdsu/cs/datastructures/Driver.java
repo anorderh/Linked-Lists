@@ -1,8 +1,8 @@
-
+package edu.sdsu.cs.datastructures;
 
 public class Driver {
     long prevTime, startTime, endTime;
-    int initialTestSize = 1000;
+    int initialTestSize = 100000;
     int testSize;
     String textBreak = "\nX-----------------------------------------------------------------------------X\n";
 
@@ -19,7 +19,6 @@ public class Driver {
         testSet();
         testReverse();
         testReverseEmpty();
-        // clear() method proven in timingTests() and testReverseEmpty()
     }
 
     // Timing tests
@@ -67,7 +66,7 @@ public class Driver {
         }
 
         System.out.println("\nTiming removeLast()...\n");
-        testSize = initialTestSize;
+        testSize = 2000;
         for (int i = 0; i < 6; i++) {
             fillSLL(timingSLL,false, testSize);
 
@@ -97,8 +96,8 @@ public class Driver {
         fillSLL(partSLL, false, partSize);
 
         System.out.println("Before add(List)...");
-        System.out.println("    fullSLL Contents: " + fullSLL);
-        System.out.println("    partSLL Contents: " + partSLL);
+        System.out.println("    fullSLL Contents: " + SLLtoString(fullSLL));
+        System.out.println("    partSLL Contents: " + SLLtoString(partSLL));
 
         System.out.println("Adding fullSLL and partSLL together...");
         fullSLL.add(partSLL);
@@ -115,8 +114,8 @@ public class Driver {
         }
 
         System.out.println("After add(List)...");
-        System.out.println("    fullSLL Contents: " + fullSLL);
-        System.out.println("    partSLL Contents: " + partSLL);
+        System.out.println("    fullSLL Contents: " + SLLtoString(fullSLL));
+        System.out.println("    partSLL Contents: " + SLLtoString(partSLL));
 
         System.out.print("add(List) function");
         if (result) {
@@ -143,8 +142,8 @@ public class Driver {
         fillSLL(compareSLL, false, testSize);
 
         System.out.println("Before removal...");
-        System.out.println("    removeSLL Contents: " + removeSLL);
-        System.out.println("    compareSLL Contents: " + compareSLL);
+        System.out.println("    removeSLL Contents: " + SLLtoString(removeSLL));
+        System.out.println("    compareSLL Contents: " + SLLtoString(compareSLL));
 
         System.out.println("Removing positive index " + positiveIndex + " from removeSLL " +
                 "and negative index " + negativeIndex + " from compareSLL");
@@ -157,8 +156,8 @@ public class Driver {
         }
 
         System.out.println("After removal...");
-        System.out.println("    removeSLL Contents: " + removeSLL);
-        System.out.println("    compareSLL Contents: " + compareSLL);
+        System.out.println("    removeSLL Contents: " + SLLtoString(removeSLL));
+        System.out.println("    compareSLL Contents: " + SLLtoString(compareSLL));
 
         System.out.print("remove() function");
         if (result) {
@@ -179,11 +178,11 @@ public class Driver {
         SinglyLinkedList<Integer> sortSLL = new SinglyLinkedList<>();
 
         fillSLL(sortSLL, true, testSize);
-        System.out.println("Before sort...\n\tsortSLL Contents: " + sortSLL);
+        System.out.println("Before sort...\n\tsortSLL Contents: " + SLLtoString(sortSLL));
         sortSLL.sort();
-        System.out.println("After sort...\n\tsortSLL Contents after sort: " + sortSLL);
+        System.out.println("After sort...\n\tsortSLL Contents after sort: " + SLLtoString(sortSLL));
 
-        result = sortSLL.isSorted();
+        result = isSorted(sortSLL);
 
         System.out.print("sort() function");
         if (result) {
@@ -209,14 +208,14 @@ public class Driver {
         fillSLL(setSLL, false, testSize);
 
         System.out.println("Before set()...");
-        System.out.println("    setSLL Contents: " + setSLL);
+        System.out.println("    setSLL Contents: " + SLLtoString(setSLL));
 
         System.out.println("Adding " + target + " to first " + newInstances + " indices...");
         for (int i = 0; i < newInstances; i++) {
             setSLL.set(i, target);
         }
         System.out.println("After set()...");
-        System.out.println("    setSLL Contents: " + setSLL);
+        System.out.println("    setSLL Contents: " + SLLtoString(setSLL));
 
         if (setSLL.count(target) != newInstances) {
             result = false;
@@ -243,11 +242,11 @@ public class Driver {
 
         fillSLL(clearSLL, false, testSize);
         System.out.println("Before clear()...");
-        System.out.println("    clearSLL Contents: " + clearSLL);
+        System.out.println("    clearSLL Contents: " + SLLtoString(clearSLL));
         System.out.println("    clearSLL size: " + clearSLL.size());
         clearSLL.clear();
         System.out.println("After clear()...");
-        System.out.println("    clearSLL Contents: " + clearSLL);
+        System.out.println("    clearSLL Contents: " + SLLtoString(clearSLL));
         System.out.println("    clearSLL size: " + clearSLL.size());
 
         if (clearSLL.size() != 0) {
@@ -281,11 +280,11 @@ public class Driver {
 
         fillSLL(reverseSLL, false, testSize);
         System.out.println("Before reverse()...");
-        System.out.println("    reverseSLL Contents: " + reverseSLL);
+        System.out.println("    reverseSLL Contents: " + SLLtoString(reverseSLL));
 
         reverseSLL.reverse();
         System.out.println("After reverse()...");
-        System.out.println("    reverseSLL Contents: " + reverseSLL);
+        System.out.println("    reverseSLL Contents: " + SLLtoString(reverseSLL));
 
         if (reverseSLL.isEmpty()) {
             result = false;
@@ -312,11 +311,11 @@ public class Driver {
         fillSLL(reverseEmptySLL, false, testSize);
         reverseEmptySLL.clear();
         System.out.println("Before reverse() on empty list...");
-        System.out.println("    reverseEmptySLL Contents: " + reverseEmptySLL);
+        System.out.println("    reverseEmptySLL Contents: " + SLLtoString(reverseEmptySLL));
 
         reverseEmptySLL.reverse();
         System.out.println("After reverse() on empty list...");
-        System.out.println("    reverseEmptySLL Contents: " + reverseEmptySLL);
+        System.out.println("    reverseEmptySLL Contents: " + SLLtoString(reverseEmptySLL));
 
         if (!reverseEmptySLL.isEmpty()) {
             result = false;
@@ -365,4 +364,39 @@ public class Driver {
 
         return message;
     }
+
+    public <E extends Comparable<E>> String SLLtoString(SinglyLinkedList<E> inputSLL) {
+        int size = inputSLL.size();
+        String contents = "";
+
+        for (int i = 0; i < size; i++) {
+            if (i+1 == size) {
+                contents += inputSLL.get(i);
+            } else {
+                contents += inputSLL.get(i) + ", ";
+            }
+        }
+
+        return "[ " + contents + " ]";
+    }
+
+    public <E extends Comparable<E>> boolean isSorted(SinglyLinkedList<E> inputSLL) {
+        int size = inputSLL.size();
+        E prevVal = null;
+        E newVal;
+
+        for (int i = 0; i < size; i++) {
+            newVal = inputSLL.get(i);
+
+            if (prevVal != null) {
+                if (prevVal.compareTo(newVal) > 0) {
+                    return false;
+                }
+            }
+            prevVal = newVal;
+        }
+
+        return true;
+    }
+
 }

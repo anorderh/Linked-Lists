@@ -1,3 +1,5 @@
+package edu.sdsu.cs.datastructures;
+
 public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
     private Node head;
     private Node tail;
@@ -214,33 +216,5 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
             }
             set(prevIndex + 1, keyData);
         }
-    }
-
-    public boolean isSorted() {
-        Node curNode = head;
-
-        while (curNode.next != null) {
-            if (curNode.data.compareTo(curNode.next.data) > 0) {
-                return false;
-            }
-            curNode = curNode.next;
-        }
-        return true;
-    }
-
-    public String toString() {
-        String contents = "";
-        Node curNode = head;
-
-        while (curNode != null && curNode.data != null) {
-            if (curNode == tail) {
-                contents += curNode.data;
-            } else {
-                contents += curNode.data + ", ";
-            }
-            curNode = curNode.next;
-        }
-
-        return "[ " + contents + " ]";
     }
 }

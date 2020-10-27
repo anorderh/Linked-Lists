@@ -1,3 +1,5 @@
+package edu.sdsu.cs.datastructures;
+
 public interface List<E> {
     boolean add(E datum);
     boolean add(List<E> other);
