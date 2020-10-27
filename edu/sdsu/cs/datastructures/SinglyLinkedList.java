@@ -1,19 +1,14 @@
 public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
     private Node head;
     private Node tail;
-    // include a size field
+    private int size = 0;
 
     private class Node {
         E data;
         Node next;
 
-        private Node() {
-            data = null;
-        }
+        private Node() { }
         private Node(E element) {
-            init(element);
-        }
-        void init(E element) {
             data = element;
         }
     }
@@ -36,6 +31,7 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
         } else {
             tail = tail.next = new Node(datum);
         }
+        size++;
 
         return true;
     }
@@ -53,7 +49,6 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
     @Override
     public boolean addFirst(E datum) {
         E prevData;
-        Node curNode = head;
 
         if (isEmpty()) {
             head.data = datum;
@@ -66,14 +61,7 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
             head = new Node(datum);
             head.next = oldHead;
         }
-
-        return true;
-    }
-
-    private boolean swapData(Node A, Node B) {
-        E storedData = A.data;
-        A.data = B.data;
-        B.data = storedData;
+        size++;
 
         return true;
     }
@@ -88,7 +76,7 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
     @Override
     public void clear() {
         while (!isEmpty()) {
-            removeFirst();
+            remove(0);
         }
     }
 
@@ -98,7 +86,7 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
         int instances = 0;
 
         while (curNode != null) {
-            if (curNode.data == target) {
+            if (curNode.data.compareTo(target) == 0) {
                 instances++;
             }
             curNode = curNode.next;
@@ -141,7 +129,7 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
     @Override
     public E remove(int index) {
         if (index < 0) {
-            index += size();
+            index += size;
         }
         E elementRemoved = getNode(index).data;
 
@@ -152,11 +140,12 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
         } else {
             disconnectNode(index);
         }
+        size--;
 
         return elementRemoved;
     }
 
-    public void disconnectNode(int index) {
+    private void disconnectNode(int index) {
         Node parentNode = getNodeParent(index);
         if (parentNode.next == tail) {
             cutTail(parentNode);
@@ -165,23 +154,14 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
         }
     }
 
-    public void cutTail(Node newTail) {
-        newTail.next = null;
-        tail = newTail;
-    }
-
-    public void removeFirst() {
-        remove(0);
-    }
-
-    public void removeLast() {
-        remove(size()-1);
+    private void cutTail(Node lowerTail) {
+        lowerTail.next = null;
+        tail = lowerTail;
     }
 
     @Override
     public void reverse() {
         if (isEmpty() || head == tail) {
-
             return;
         }
         Node pointer = head;
@@ -190,11 +170,11 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
 
         tail = head;
         while (pointer != null) {
-            curNode = pointer;
-            curNode.next = prevNode;
-            head = prevNode = curNode;
+            curNode = pointer.next;
+            pointer.next = prevNode;
+            head = prevNode = pointer;
 
-            pointer = pointer.next;
+            pointer = curNode;
         }
     }
 
@@ -214,14 +194,6 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
 
     @Override
     public int size() {
-        Node curNode = head;
-        int size = 0;
-
-        while (curNode != null) {
-            curNode = curNode.next;
-            size++;
-        }
-
         return size;
     }
 
@@ -231,7 +203,7 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
         int prevIndex;
 
         // insertion sort
-        for (int i = 1; i < size(); i++) {
+        for (int i = 1; i < size; i++) {
             keyData = get(i);
             prevIndex = i - 1;
 
