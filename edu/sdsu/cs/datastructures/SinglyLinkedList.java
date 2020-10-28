@@ -54,14 +54,14 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
 
         if (isEmpty()) {
             head.data = datum;
-        } else if (head == tail) {
-            prevData = head.data;
-            head.data = datum;
-            tail = head.next = new Node(prevData);
         } else {
             Node oldHead = head;
             head = new Node(datum);
             head.next = oldHead;
+
+            if (head.next.next == null) {
+                tail = oldHead;
+            }
         }
         size++;
 
@@ -99,7 +99,12 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
 
     @Override
     public E get(int index) {
-        return getNode(index).data;
+        try {
+            return getNode(index).data;
+        } catch (NullPointerException e) {
+            System.out.println("\t!ERROR! " + e.toString() + " / Desired index out of bounds");
+            return null;
+        }
     }
 
     @Override
@@ -110,7 +115,14 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
         return false;
     }
 
-    private Node getNodeParent(int index) {
+    private Node getNodeParent(int index) throws NullPointerException {
+        if (index < 0) {
+            index += size;
+            if (index < 0) {
+                return null;
+            }
+        }
+
         Node curNode = head;
         while (index-1 > 0) {
             curNode = curNode.next;
@@ -120,7 +132,7 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
         return curNode;
     }
 
-    private Node getNode(int index) {
+    private Node getNode(int index) throws NullPointerException {
         if (index == 0) {
             return getNodeParent(1);
         } else {
@@ -130,24 +142,27 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
 
     @Override
     public E remove(int index) {
-        if (index < 0) {
-            index += size;
-        }
-        E elementRemoved = getNode(index).data;
+        try {
+            E elementRemoved = getNode(index).data;
 
-        if (head == tail) {
-            tail.data = null;
-        } else if (index == 0) {
-            head = head.next;
-        } else {
-            disconnectNode(index);
-        }
-        size--;
+            if (head == tail) {
+                tail.data = null;
+            } else if (index == 0) {
+                head = head.next;
+            } else {
+                disconnectNode(index);
+            }
+            size--;
 
-        return elementRemoved;
+            return elementRemoved;
+
+        } catch (NullPointerException e) {
+            System.out.println("\t!ERROR! " + e.toString() + " / Desired index out of bounds");
+            return null;
+        }
     }
 
-    private void disconnectNode(int index) {
+    private void disconnectNode(int index) throws NullPointerException {
         Node parentNode = getNodeParent(index);
         if (parentNode.next == tail) {
             cutTail(parentNode);
@@ -182,16 +197,20 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
 
     @Override
     public E set(int index, E value) {
-        Node desiredNode = getNode(index);
-        E prevValue = null;
-        if (desiredNode == null) {
-            tail = tail.next = new Node(value);
-        } else {
-            prevValue = desiredNode.data;
-            desiredNode.data = value;
-        }
+        try {
+            Node desiredNode = getNode(index);
 
-        return prevValue;
+            E prevValue = desiredNode.data;
+            desiredNode.data = value;
+
+            return prevValue;
+
+        } catch (NullPointerException e) {
+            System.out.println("\t!ERROR! " + e.toString() + " / Desired index out of bounds" +
+                            "\n\tAdding intended data as new node to list's end...");
+            add(value);
+            return null;
+        }
     }
 
     @Override

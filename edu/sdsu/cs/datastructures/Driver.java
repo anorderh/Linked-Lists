@@ -19,6 +19,7 @@ public class Driver {
         testSet();
         testReverse();
         testReverseEmpty();
+        testOutOfBoundsErrors();
     }
 
     // Timing tests
@@ -326,6 +327,63 @@ public class Driver {
             System.out.println(" passed\n");
         } else {
             System.out.println(" failed\n");
+        }
+
+        System.out.println(textBreak);
+    }
+
+    public void testOutOfBoundsErrors() {
+        System.out.println("Testing for \"out of bounds\" errors...\n");
+
+        boolean result = true;
+        testSize = 10;
+        int oobIndexA = testSize + 1; // out of bounds positive index, greater than testSize
+        int oobIndexB = (-1 * testSize) - 1; // out of bounds negative index, less than -testSize
+        int newValue = testSize; // used for out of bounds set()
+        Integer outputA, outputB, outputC;
+
+        SinglyLinkedList<Integer> outOfBoundsSLL = new SinglyLinkedList<>();
+        fillSLL(outOfBoundsSLL, false, testSize);
+
+        System.out.println("Before out of bounds remove()...");
+        System.out.println("    outOfBoundsSLL Contents: " + SLLtoString(outOfBoundsSLL));
+        System.out.println("~~~ remove() Error message should be below... ~~~");
+        outputA = outOfBoundsSLL.remove(oobIndexA);
+        System.out.println("After out of bounds remove()...");
+        System.out.println("    outOfBoundsSLL Contents: " + SLLtoString(outOfBoundsSLL) + "\n");
+
+        System.out.println("Before out of bounds get()...");
+        System.out.println("    outOfBoundsSLL Contents: " + SLLtoString(outOfBoundsSLL));
+        System.out.println("~~~ get() Error message should be below... ~~~");
+        outputB = outOfBoundsSLL.get(oobIndexB);
+        System.out.println("After out of bounds get()...");
+        System.out.println("    outOfBoundsSLL Contents: " + SLLtoString(outOfBoundsSLL) + "\n");
+
+        System.out.println("Before out of bounds set()...");
+        System.out.println("    outOfBoundsSLL Contents: " + SLLtoString(outOfBoundsSLL));
+        System.out.println("~~~ set() Error message should be below...~~~ ");
+        outputC = outOfBoundsSLL.set(oobIndexB, newValue);
+        System.out.println("After out of bounds set()...");
+        System.out.println("    outOfBoundsSLL Contents: " + SLLtoString(outOfBoundsSLL) + "\n");
+
+        if (outOfBoundsSLL.size() == ++testSize) {
+            System.out.println("set() correctly added newValue to SLL");
+        } else {
+            System.out.println("set() failed to add newValue to SLL");
+        }
+
+        if (outputA == null && outputB == null && outputC == null) {
+            System.out.println("All out of bounds indices correctly retrieved null!");
+        } else {
+            result = false;
+            System.out.println("1+ out of bounds indices failed to retrieve null.");
+        }
+
+        System.out.print("Out of bounds indices");
+        if (result) {
+            System.out.println(" all correctly caused errors and were handled\n");
+        } else {
+            System.out.println(" partially/fully failed to cause errors and be handled\n");
         }
 
         System.out.println(textBreak);
