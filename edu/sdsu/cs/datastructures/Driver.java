@@ -24,7 +24,7 @@ public class Driver {
 
     // Timing tests
     public void timingTests() {
-        SinglyLinkedList<Integer> timingSLL = new SinglyLinkedList<>();
+        List<Integer> timingSLL = new SinglyLinkedList<Integer>();
 
         System.out.println("\nTiming addFirst()...\n");
         testSize = initialTestSize;
@@ -90,8 +90,8 @@ public class Driver {
         int origSize, partSize;
         origSize = 10;
         partSize = 5;
-        SinglyLinkedList<Integer> fullSLL = new SinglyLinkedList<>();
-        SinglyLinkedList<Integer> partSLL = new SinglyLinkedList<>();
+        List<Integer> fullSLL = new SinglyLinkedList<>();
+        List<Integer> partSLL = new SinglyLinkedList<>();
 
         fillSLL(fullSLL, false, origSize);
         fillSLL(partSLL, false, partSize);
@@ -137,8 +137,8 @@ public class Driver {
         int positiveIndex = 7;
         int negativeIndex = positiveIndex - testSize;
 
-        SinglyLinkedList<Integer> removeSLL = new SinglyLinkedList<>();
-        SinglyLinkedList<Integer> compareSLL = new SinglyLinkedList<>();
+        List<Integer> removeSLL = new SinglyLinkedList<>();
+        List<Integer> compareSLL = new SinglyLinkedList<>();
         fillSLL(removeSLL, false, testSize);
         fillSLL(compareSLL, false, testSize);
 
@@ -176,7 +176,7 @@ public class Driver {
 
         boolean result = true;
         testSize = 10;
-        SinglyLinkedList<Integer> sortSLL = new SinglyLinkedList<>();
+        List<Integer> sortSLL = new SinglyLinkedList<>();
 
         fillSLL(sortSLL, true, testSize);
         System.out.println("Before sort...\n\tsortSLL Contents: " + SLLtoString(sortSLL));
@@ -205,7 +205,7 @@ public class Driver {
 
         target = 45; // choose number not within 0 to testSize
         newInstances = 5; // newInstances <= testSize
-        SinglyLinkedList<Integer> setSLL = new SinglyLinkedList<>();
+        List<Integer> setSLL = new SinglyLinkedList<>();
         fillSLL(setSLL, false, testSize);
 
         System.out.println("Before set()...");
@@ -239,7 +239,7 @@ public class Driver {
 
         boolean result = true;
         testSize = 10;
-        SinglyLinkedList<Integer> clearSLL = new SinglyLinkedList<>();
+        List<Integer> clearSLL = new SinglyLinkedList<>();
 
         fillSLL(clearSLL, false, testSize);
         System.out.println("Before clear()...");
@@ -277,7 +277,7 @@ public class Driver {
 
         boolean result = true;
         testSize = 10;
-        SinglyLinkedList<Integer> reverseSLL = new SinglyLinkedList<>();
+        List<Integer> reverseSLL = new SinglyLinkedList<>();
 
         fillSLL(reverseSLL, false, testSize);
         System.out.println("Before reverse()...");
@@ -307,7 +307,7 @@ public class Driver {
 
         boolean result = true;
         testSize = 10;
-        SinglyLinkedList<Integer> reverseEmptySLL = new SinglyLinkedList<>();
+        List<Integer> reverseEmptySLL = new SinglyLinkedList<>();
 
         fillSLL(reverseEmptySLL, false, testSize);
         reverseEmptySLL.clear();
@@ -342,7 +342,7 @@ public class Driver {
         int newValue = testSize; // used for out of bounds set()
         Integer outputA, outputB, outputC;
 
-        SinglyLinkedList<Integer> outOfBoundsSLL = new SinglyLinkedList<>();
+        List<Integer> outOfBoundsSLL = new SinglyLinkedList<>();
         fillSLL(outOfBoundsSLL, false, testSize);
 
         System.out.println("Before out of bounds remove()...");
@@ -389,7 +389,7 @@ public class Driver {
         System.out.println(textBreak);
     }
 
-    public void fillSLL(SinglyLinkedList<Integer> sll, boolean first, int size) {
+    public void fillSLL(List<Integer> sll, boolean first, int size) {
         int initialElement = 0;
 
         for (int j = 0; j < size; j++) {
@@ -401,7 +401,7 @@ public class Driver {
         }
     }
 
-    public void drainSLL(SinglyLinkedList<Integer> sll, boolean first) {
+    public void drainSLL(List<Integer> sll, boolean first) {
         while (!sll.isEmpty()) {
             if (first) {
                 sll.remove(0);
@@ -423,7 +423,7 @@ public class Driver {
         return message;
     }
 
-    public <E extends Comparable<E>> String SLLtoString(SinglyLinkedList<E> inputSLL) {
+    public <E extends Comparable<E>> String SLLtoString(List<E> inputSLL) {
         int size = inputSLL.size();
         String contents = "";
 
@@ -438,7 +438,7 @@ public class Driver {
         return "[ " + contents + " ]";
     }
 
-    public <E extends Comparable<E>> boolean isSorted(SinglyLinkedList<E> inputSLL) {
+    public <E extends Comparable<E>> boolean isSorted(List<E> inputSLL) {
         int size = inputSLL.size();
         E prevVal = null;
         E newVal;
