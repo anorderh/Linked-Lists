@@ -1,15 +1,28 @@
+/**
+ * (CS-310 / Program 2 - Linked Lists) Driver Class
+ * Class that times and tests the accuracy of SinglyLinkedList's internal functions, as specified by Canvas assignment page.
+ * @author Anthony Norderhaug
+ * @date 10/29/2020
+ */
+
 package edu.sdsu.cs.datastructures;
 
 public class Driver {
+    // helper fields for tracking time, growth, and standardizing test sizes
     long prevTime, startTime, endTime;
     int initialTestSize = 100000;
     int testSize;
+
+    // used for readability
     String textBreak = "\nX-----------------------------------------------------------------------------X\n";
 
     public static void main(String[] args) {
         new Driver();
     }
 
+    /**
+     * Instance of Driver() calling all test functions, each named respectively for what function is being examined
+     */
     Driver() {
         timingTests();
         testListAdd();
@@ -22,7 +35,10 @@ public class Driver {
         testOutOfBoundsErrors();
     }
 
-    // Timing tests
+    /**
+     * timingTests() initializes a List with a SinglyLinkedList and times its add and remove functions from both the front
+     * and back ends. For each method & location combo, multiple iterations of doubling size are performed.
+     */
     public void timingTests() {
         List<Integer> timingSLL = new SinglyLinkedList<Integer>();
 
@@ -31,7 +47,7 @@ public class Driver {
         for (int i = 0; i < 6; i++) {
 
             startTime = System.currentTimeMillis();
-            fillSLL(timingSLL,true, testSize);
+            fillSLL(timingSLL,true, testSize);  // helper method which fills up SLL to testSize argument
             endTime = System.currentTimeMillis();
 
             System.out.println(printMessage(i));
@@ -44,7 +60,7 @@ public class Driver {
         for (int i = 0; i < 6; i++) {
 
             startTime = System.currentTimeMillis();
-            fillSLL(timingSLL,false, testSize);
+            fillSLL(timingSLL,false, testSize); // helper method which fills up SLL to testSize argument
             endTime = System.currentTimeMillis();
 
             System.out.println(printMessage(i));
@@ -55,10 +71,10 @@ public class Driver {
         System.out.println("\nTiming removeFirst()...\n");
         testSize = initialTestSize;
         for (int i = 0; i < 6; i++) {
-            fillSLL(timingSLL,false, testSize);
+            fillSLL(timingSLL,false, testSize); // filing up SLL before removal
 
             startTime = System.currentTimeMillis();
-            drainSLL(timingSLL,true);
+            drainSLL(timingSLL,true);           // helper method which drains SLL until empty
             endTime = System.currentTimeMillis();
 
             System.out.println(printMessage(i));
@@ -69,10 +85,10 @@ public class Driver {
         System.out.println("\nTiming removeLast()...\n");
         testSize = 2000;
         for (int i = 0; i < 6; i++) {
-            fillSLL(timingSLL,false, testSize);
+            fillSLL(timingSLL,false, testSize); // filing up SLL before removal
 
             startTime = System.currentTimeMillis();
-            drainSLL(timingSLL,false);
+            drainSLL(timingSLL,false);          // helper method which drains SLL until empty
             endTime = System.currentTimeMillis();
 
             System.out.println(printMessage(i));
@@ -82,7 +98,11 @@ public class Driver {
         System.out.println(textBreak);
     }
 
-    // Testing add(List)
+    /**
+     * testListAdd() declares, initializes, and fills up two List objects (initialized with SinglyLinkedList) and adds
+     * them together with the internal add(List) function. Comparing size and its relative element, statement is printed
+     * indicating result.
+     */
     public void testListAdd() {
         System.out.println("Testing add(List)...\n");
 
@@ -128,7 +148,11 @@ public class Driver {
         System.out.println(textBreak);
     }
 
-    // Testing remove() with negative indices
+    /**
+     * testRemove() declares, initializes, and fills up two Lists (initialized with SinglyLinkedList) and tests whether
+     * the internal remove() function is accurate for both positive and negative indices. Prints statement indicating
+     * result.
+     */
     public void testRemove() {
         System.out.println("Testing remove()...\n");
 
@@ -152,6 +176,8 @@ public class Driver {
         positiveRemoval = removeSLL.remove(positiveIndex);
         negativeRemoval = compareSLL.remove(negativeIndex);
 
+        // remove() retrieves the element removed so if they're not equivalent, remove() is faulty
+        // Integers stored in ints, as opposed to SinglyLinkedList's count() using .compareTo since generic
         if (positiveRemoval != negativeRemoval) {
             result = false;
         }
@@ -170,6 +196,11 @@ public class Driver {
         System.out.println(textBreak);
     }
 
+    /**
+     * testSort() declares, initializes, and fills a List object (with SinglyLinkedList) but in reverse order. Its internal
+     * sort() function is then called and a Driver helper method is used to evaluate its "supposed "sorted nature. Prints
+     * statement indicating result.
+     */
     // Testing sort()
     public void testSort() {
         System.out.println("Testing sort()...\n");
@@ -183,7 +214,7 @@ public class Driver {
         sortSLL.sort();
         System.out.println("After sort...\n\tsortSLL Contents after sort: " + SLLtoString(sortSLL));
 
-        result = isSorted(sortSLL);
+        result = isSorted(sortSLL, false);
 
         System.out.print("sort() function");
         if (result) {
@@ -195,7 +226,11 @@ public class Driver {
         System.out.println(textBreak);
     }
 
-    // Testing set() with count()
+    /**
+     * testSet() declares, initializes, and fills a List object (with SinglyLinkedList) and then sets a specific amount
+     * of elements to a target value. Count() is then called to identify if the List contains the target that specific
+     * amount of times. Prints statement indicating result.
+     */
     public void testSet() {
         System.out.println("Testing set()...\n");
 
@@ -204,6 +239,7 @@ public class Driver {
         int target, newInstances;
 
         target = 45; // choose number not within 0 to testSize
+        // to ensure no pre-existing values the same as "target" skew count() if it were working properly
         newInstances = 5; // newInstances <= testSize
         List<Integer> setSLL = new SinglyLinkedList<>();
         fillSLL(setSLL, false, testSize);
@@ -234,6 +270,10 @@ public class Driver {
         System.out.println(textBreak);
     }
 
+    /**
+     * testClear() declares, initializes, and fills a List (with SinglyLinkedList) and then calls its clear method. Checking
+     * size and isEmpty() function after, a statement is printed indicating result.
+     */
     public void testClear() {
         System.out.println("Testing clear()...\n");
 
@@ -272,6 +312,10 @@ public class Driver {
         System.out.println(textBreak);
     }
 
+    /**
+     * testReverse() declares, initializes, and fills a List (with SinglyLinkedList) and calls its reverse() function.
+     * Its reverse order is then confirmed with Driver helper isSorted(). Prints statement indicating result.
+     */
     public void testReverse() {
         System.out.println("Testing reverse()...\n");
 
@@ -287,7 +331,10 @@ public class Driver {
         System.out.println("After reverse()...");
         System.out.println("    reverseSLL Contents: " + SLLtoString(reverseSLL));
 
-        if (reverseSLL.isEmpty()) {
+        if (isSorted(reverseSLL, true)) {
+            System.out.println("reverseSLL is in reverse order!");
+        } else {
+            System.out.println("reverseSLL is not in reverse order.");
             result = false;
         }
 
@@ -301,7 +348,11 @@ public class Driver {
         System.out.println(textBreak);
     }
 
-    // Testing reverse() on empty SLL
+    /**
+     * testReverseEmpty() declares, initializes, and fills a List object (with SinglyLinkedList) and then clears it.
+     * Reverse() is called on empty structure and if no errors produced, isEmpty() is called to confirm empty nature.
+     * Prints statement indicating result.
+     */
     public void testReverseEmpty() {
         System.out.println("Testing reverse() on empty list...\n");
 
@@ -332,6 +383,11 @@ public class Driver {
         System.out.println(textBreak);
     }
 
+    /**
+     * testOutOfBoundsErrors() declares, initializes, and fills a List object (with SinglyLinkedList) and calls its
+     * remove(), get(), and set() with invalid indices. Confirming that all retireved values are the desired null, a
+     * statement is printed indicating the result.
+     */
     public void testOutOfBoundsErrors() {
         System.out.println("Testing for \"out of bounds\" errors...\n");
 
@@ -339,7 +395,7 @@ public class Driver {
         testSize = 10;
         int oobIndexA = testSize + 1; // out of bounds positive index, greater than testSize
         int oobIndexB = (-1 * testSize) - 1; // out of bounds negative index, less than -testSize
-        int newValue = testSize; // used for out of bounds set()
+        int newValue = testSize; // new element, used for out of bounds set()
         Integer outputA, outputB, outputC;
 
         List<Integer> outOfBoundsSLL = new SinglyLinkedList<>();
@@ -389,6 +445,14 @@ public class Driver {
         System.out.println(textBreak);
     }
 
+    /**
+     * fillSLL() fills a List (presumed to be SLL implementation) with a base element of 0 incrementing each iteration.
+     * Fills up to argument size and uses boolean to indicate whether adding to front or end.
+     *
+     * @param sll                                                   input SLL
+     * @param first                                                 boolean for front or end
+     * @param size                                                  int for desired size
+     */
     public void fillSLL(List<Integer> sll, boolean first, int size) {
         int initialElement = 0;
 
@@ -401,6 +465,13 @@ public class Driver {
         }
     }
 
+    /**
+     * drainSLL() drains a List (presumed to be SLL implementation) until it is empty. Uses boolean to indicate whether
+     * removing from front or end.
+     *
+     * @param sll                                                   input SLL
+     * @param first                                                 boolean for front or end
+     */
     public void drainSLL(List<Integer> sll, boolean first) {
         while (!sll.isEmpty()) {
             if (first) {
@@ -411,6 +482,13 @@ public class Driver {
         }
     }
 
+    /**
+     * printMessage() is helper function for printing derived time for each iteration of timingTests(). Iterations past
+     * initial utilize class field prevTime to calculate growth.
+     *
+     * @param iteration                                             int representing current iteration
+     * @return                                                      String containing message
+     */
     public String printMessage(int iteration) {
         long elapsed = endTime - startTime;
         String message = "Test Size: " + testSize + " | Elapsed time: " + elapsed;
@@ -423,6 +501,13 @@ public class Driver {
         return message;
     }
 
+    /**
+     * SLLtoString() returns a String containing all of an SLL's elements for readability
+     *
+     * @param inputSLL                                              input SLL
+     * @param <E>                                                   type parameter for internal elements
+     * @return                                                      String containing SLL string representation
+     */
     public <E extends Comparable<E>> String SLLtoString(List<E> inputSLL) {
         int size = inputSLL.size();
         String contents = "";
@@ -438,7 +523,16 @@ public class Driver {
         return "[ " + contents + " ]";
     }
 
-    public <E extends Comparable<E>> boolean isSorted(List<E> inputSLL) {
+    /**
+     * isSorted() compares subsequent values of an SLL and confirms the entirety is in increasing or decreasing order.
+     * Boolean species "in order" or "reverse" order.
+     *
+     * @param inputSLL                                              input SLL
+     * @param reverse                                               boolean indicating if reverse order desired
+     * @param <E>                                                   type parameter for internal elements
+     * @return                                                      boolean indicating properly sorted or not
+     */
+    public <E extends Comparable<E>> boolean isSorted(List<E> inputSLL, boolean reverse) {
         int size = inputSLL.size();
         E prevVal = null;
         E newVal;
@@ -447,7 +541,9 @@ public class Driver {
             newVal = inputSLL.get(i);
 
             if (prevVal != null) {
-                if (prevVal.compareTo(newVal) > 0) {
+                if (!reverse && prevVal.compareTo(newVal) > 0) {
+                    return false;
+                } else if (reverse && prevVal.compareTo(newVal) < 0) {
                     return false;
                 }
             }

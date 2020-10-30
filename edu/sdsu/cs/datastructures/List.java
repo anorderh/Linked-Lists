@@ -1,3 +1,9 @@
+/**
+ * (CS-310 / Program 2 - Linked Lists) List Interface
+ * Interface declaring several methods for implementing classes to define
+ * @author Anthony Norderhaug
+ * @date 10/30/2020
+ */
 package edu.sdsu.cs.datastructures;
 
 public interface List<E> {
